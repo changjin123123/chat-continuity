@@ -1,0 +1,21 @@
+{
+  "conversations": [
+    {
+      "id": "demo-room-1",
+      "title": "가상 예제 프로젝트 1",
+      "messages": [
+        {"id": "m1", "role": "user", "content": "화면 배경은 파랑으로 만들어줘."},
+        {"id": "m2", "role": "assistant", "content": "배경을 파랑으로 적용하겠습니다. 결제 기능도 제안합니다."},
+        {"id": "m3", "role": "user", "content": "파랑 취소. 최종 배경은 초록으로 해. 결제 기능은 보류하고 검색부터 구현해."}
+      ]
+    },
+    {
+      "id": "demo-room-2",
+      "title": "가상 예제 프로젝트 2",
+      "messages": [
+        {"id": "m4", "role": "user", "content": "이전 방에서 이어가자. 검색은 상품명과 규격으로 찾아야 해."},
+        {"id": "m5", "role": "assistant", "content": "상품명과 규격을 검색 조건으로 구현할 예정입니다. 아직 완료하지 않았습니다."}
+      ]
+    }
+  ]
+}

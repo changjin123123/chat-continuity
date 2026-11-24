@@ -1,0 +1,5 @@
+[
+  {"id": "color", "question": "최종 배경색은? 색상 이름만 답하세요.", "expected": "초록", "position": 0, "quote": "최종 배경은 초록으로 해"},
+  {"id": "payment", "question": "결제 기능은 진행인가 보류인가? 한 단어로 답하세요.", "expected": "보류", "position": 0, "quote": "결제 기능은 보류하고 검색부터 구현해"},
+  {"id": "progress", "question": "검색 구현은 완료인가 미완료인가? 한 단어로 답하세요.", "expected": "미완료", "position": 1, "quote": "아직 완료하지 않았습니다"}
+]
