@@ -8,6 +8,7 @@ import sys
 
 from . import __version__
 from .core import ContinuityError, Store, budget
+from .capacity import capacity_report
 
 
 def schema(properties, required):
@@ -24,6 +25,9 @@ def tool(name, description, properties, required=None):
 
 
 TOOLS = [
+    tool("capacity_report", "Report post-handoff context usage separately from read coverage. No native ChatGPT telemetry. Missing values stay unknown. Estimates require provenance; do not use billed totals.",
+         {"context_limit": I, "used_tokens": I, "source": {"type": "string", "enum": ["unknown", "caller_reported", "estimated"]},
+          "evidence": S, "observed_at": S, "next_turn_reserve": I}, []),
     tool("list_projects", "List locally imported conversation heads. Does not fetch ChatGPT account history.", {}),
     tool("manifest", "Describe source snapshot and branch-preserving scope.", {"snapshot": S}),
     tool("new_session", "Create internal reader session for a NEW AI context. No ChatGPT room is created.",
@@ -83,7 +87,9 @@ def call(store, name, args):
     if spec is None:
         raise ContinuityError("Unknown tool")
     validate(args, spec["inputSchema"])
-    fn = budget if name == "budget" else getattr(store, name)
+    fn = {"budget": budget, "capacity_report": capacity_report}.get(name)
+    if fn is None:
+        fn = getattr(store, name)
     inspect.signature(fn).bind(**args)
     return fn(**args)
 
