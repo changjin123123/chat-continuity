@@ -197,3 +197,26 @@ powershell -File .\publish.ps1
 MCP 구현 기준: [stdio transport](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports),
 [lifecycle](https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle),
 [tools](https://modelcontextprotocol.io/specification/2025-11-25/server/tools).
+
+## 이전 후 용량 표시
+
+`capacity_report`는 CLI/MCP 공통 도구입니다. 새 방에서 원문을 읽고 난 **그 시점**의
+작업 문맥 사용 토큰과 적용 한도를 호스트가 제공해야 퍼센트를 계산합니다.
+ChatGPT 앱의 실제 대화방 용량을 자동 조회하지 않습니다. 값을 모르면 `0%`가 아니라
+**`알 수 없음 / 100`**을 반환합니다. 원문 읽기 완료율은 `status.coverage`로 별도 확인합니다.
+
+```bash
+python -m continuity call capacity_report
+python -m continuity call capacity_report --args '{"context_limit":100000,"used_tokens":12000,"source":"estimated","evidence":"Example only: estimated current-context tokens and assumed limit","observed_at":"2026-11-25T00:00:00Z"}'
+```
+
+두 번째 명령의 `12 / 100 (추정)`은 가상 예시이며 실제 ChatGPT 용량이 아닙니다.
+호스트 관측값은 `source=caller_reported`, 추정값은 `source=estimated`로 구분하고
+근거(`evidence`)와 관측 시점(`observed_at`)을 반드시 기록합니다. 사용량이나 한도 중
+하나라도 없으면 비율과 전환 판단은 `null`입니다. 한도를 넘으면 100으로 숨기지 않고
+초과 비율과 `over_limit`을 반환합니다. 이 보고서는 입력 시점의 계산이며 자동 갱신되지 않습니다.
+
+ZIP 바이트·문자 수·읽기 진행률·누적 과금 토큰은 현재 문맥 사용량으로 사용하지 마세요.
+추정 보고서의 전환 신호도 추정일 뿐입니다. 기존 `prepare_handoff`에는 호스트가 확인한
+현재 작업 문맥 사용량을 제공해야 합니다. 새 방을 만들거나 원문을 읽는 것만으로
+문맥 사용량이 0으로 초기화됐다고 간주하지 않습니다.
