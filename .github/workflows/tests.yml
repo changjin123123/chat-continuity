@@ -1,0 +1,25 @@
+name: Python tests
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test without optional dependencies
+        run: python -S -m unittest discover -s tests -v
+      - name: Install optional local tokenizer
+        run: python -m pip install tiktoken==0.12.0
+      - name: Prepare public tokenizer dictionaries
+        run: python -m continuity prepare-tokenizers
+      - name: Run full synthetic tests
+        run: python -m unittest discover -s tests -v
