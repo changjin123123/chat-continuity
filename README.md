@@ -9,6 +9,22 @@
 
 공개 코드 저장소: https://github.com/changjin123123/chat-continuity
 
+## 새 방 예상 잔여 용량 계산
+
+`estimate-capacity`는 원문 전체 보관량과 새 문맥에 실제 넣었다고 지정한 자료를 분리해
+한국어·영어·코드·JSON의 토큰 수를 로컬에서 비교합니다. 후속 요약/응답과 추가량 가정을
+합산하고 여러 문맥 한도 가정에 따른 잔여율 범위를 표시합니다. 실제 ChatGPT 계측은 아닙니다.
+
+Windows는 `run_capacity_demo.cmd`를 실행하거나 아래 합성 데모로 시작하세요.
+
+```bash
+python -m examples.capacity_demo
+```
+
+기본 기능은 의존성 없이 동작합니다. 선택적인 BPE 비교 설치·내 자료 계산·Python 연동은
+[CAPACITY_ESTIMATOR.md](docs/CAPACITY_ESTIMATOR.md), 실측한 합성 비교표는
+[CAPACITY_VALIDATION.md](docs/CAPACITY_VALIDATION.md)에 있습니다.
+
 ## 구현 상태
 
 | 기능 | v0.1 |

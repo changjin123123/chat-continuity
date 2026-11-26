@@ -12,3 +12,5 @@ imports/
 exports/
 private/
 *.zip
+continuity/tokenizer_data/
+capacity-report*.json
